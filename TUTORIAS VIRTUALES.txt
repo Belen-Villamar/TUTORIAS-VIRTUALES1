@@ -1,0 +1,486 @@
+--CREACION DE TABLAS
+/*==============================================================*/
+/* Table: DESCRIPCION_TUTORIA                                   */
+/*==============================================================*/
+create table DESCRIPCION_TUTORIA (
+   ID_DESCRIPCIONTUTORIA SERIAL               not null,
+   ID_TUTORIAS          INT4                 not null,
+   ESTADO_TUTORIA       TEXT                 not null,
+   NIVEL_SATISFACCION_TUTORIA TEXT                 not null,
+   constraint PK_DESCRIPCION_TUTORIA primary key (ID_DESCRIPCIONTUTORIA)
+);
+
+/*==============================================================*/
+/* Index: DESCRIPCION_TUTORIA_PK                                */
+/*==============================================================*/
+create unique index DESCRIPCION_TUTORIA_PK on DESCRIPCION_TUTORIA (
+ID_DESCRIPCIONTUTORIA
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_14_FK                                    */
+/*==============================================================*/
+create  index RELATIONSHIP_14_FK on DESCRIPCION_TUTORIA (
+ID_TUTORIAS
+);
+
+/*==============================================================*/
+/* Table: EMPRESA                                               */
+/*==============================================================*/
+create table EMPRESA (
+   ID_EMPRESA           SERIAL               not null,
+   ID_PROVINCIA         INT4                 not null,
+   NOMBRE_EMPRESA       TEXT                 not null,
+   constraint PK_EMPRESA primary key (ID_EMPRESA)
+);
+
+/*==============================================================*/
+/* Index: EMPRESA_PK                                            */
+/*==============================================================*/
+create unique index EMPRESA_PK on EMPRESA (
+ID_EMPRESA
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_4_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_4_FK on EMPRESA (
+ID_PROVINCIA
+);
+
+/*==============================================================*/
+/* Table: ESTUDIANTE                                            */
+/*==============================================================*/
+create table ESTUDIANTE (
+   ID_ESTUDIANTE        SERIAL               not null,
+   ID_TIPOESTUDIANTE    INT4                 not null,
+   ID_EMPRESA           INT4                 not null,
+   CEDULA_ESTUDIANTE    CHAR(11)             not null,
+   NOMBRE_ESTUDIANTE    TEXT                 not null,
+   APELLIDO_ESTUDIANTE  TEXT                 not null,
+   PROFESION_ESTUDIANTE TEXT                 not null,
+   TELEFONO_ESTUDIANTE  CHAR(10)             not null,
+   CORREO_ESTUDIANTE    TEXT                 not null,
+   constraint PK_ESTUDIANTE primary key (ID_ESTUDIANTE)
+);
+
+/*==============================================================*/
+/* Index: ESTUDIANTE_PK                                         */
+/*==============================================================*/
+create unique index ESTUDIANTE_PK on ESTUDIANTE (
+ID_ESTUDIANTE
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_6_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_6_FK on ESTUDIANTE (
+ID_TIPOESTUDIANTE
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_8_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_8_FK on ESTUDIANTE (
+ID_EMPRESA
+);
+
+/*==============================================================*/
+/* Table: MEDIO                                                 */
+/*==============================================================*/
+create table MEDIO (
+   ID_MEDIOS            SERIAL               not null,
+   ID_EMPRESA           INT4                 not null,
+   TIPOS_MEDIOS         TEXT                 not null,
+   COSTO_MEDIO          DECIMAL              not null,
+   constraint PK_MEDIO primary key (ID_MEDIOS)
+);
+
+/*==============================================================*/
+/* Index: MEDIO_PK                                              */
+/*==============================================================*/
+create unique index MEDIO_PK on MEDIO (
+ID_MEDIOS
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_1_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_1_FK on MEDIO (
+ID_EMPRESA
+);
+
+/*==============================================================*/
+/* Table: PAIS                                                  */
+/*==============================================================*/
+create table PAIS (
+   ID_PAIS              SERIAL               not null,
+   NOMBRE_PAIS          TEXT                 not null,
+   constraint PK_PAIS primary key (ID_PAIS)
+);
+
+/*==============================================================*/
+/* Index: PAIS_PK                                               */
+/*==============================================================*/
+create unique index PAIS_PK on PAIS (
+ID_PAIS
+);
+
+/*==============================================================*/
+/* Table: PROVINCIA                                             */
+/*==============================================================*/
+create table PROVINCIA (
+   ID_PROVINCIA         SERIAL               not null,
+   ID_PAIS              INT4                 not null,
+   NOMBRE_PROVINCIA     TEXT                 not null,
+   constraint PK_PROVINCIA primary key (ID_PROVINCIA)
+);
+
+/*==============================================================*/
+/* Index: PROVINCIA_PK                                          */
+/*==============================================================*/
+create unique index PROVINCIA_PK on PROVINCIA (
+ID_PROVINCIA
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_3_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_3_FK on PROVINCIA (
+ID_PAIS
+);
+
+/*==============================================================*/
+/* Table: RELACION                                              */
+/*==============================================================*/
+create table RELACION (
+   ID_DESCRIPCIONTUTORIA INT4                 not null,
+   ID_ESTUDIANTE        INT4                 not null,
+   constraint PK_RELACION primary key (ID_DESCRIPCIONTUTORIA, ID_ESTUDIANTE)
+);
+
+/*==============================================================*/
+/* Index: RELACION_PK                                           */
+/*==============================================================*/
+create unique index RELACION_PK on RELACION (
+ID_DESCRIPCIONTUTORIA,
+ID_ESTUDIANTE
+);
+
+/*==============================================================*/
+/* Index: RELACION2_FK                                          */
+/*==============================================================*/
+create  index RELACION2_FK on RELACION (
+ID_ESTUDIANTE
+);
+
+/*==============================================================*/
+/* Index: RELACION_FK                                           */
+/*==============================================================*/
+create  index RELACION_FK on RELACION (
+ID_DESCRIPCIONTUTORIA
+);
+
+/*==============================================================*/
+/* Table: TIPO_ESTUDIANTE                                       */
+/*==============================================================*/
+create table TIPO_ESTUDIANTE (
+   ID_TIPOESTUDIANTE    SERIAL               not null,
+   DETALLE_TIPOESTUDIANTE TEXT                 not null,
+   constraint PK_TIPO_ESTUDIANTE primary key (ID_TIPOESTUDIANTE)
+);
+
+/*==============================================================*/
+/* Index: TIPO_ESTUDIANTE_PK                                    */
+/*==============================================================*/
+create unique index TIPO_ESTUDIANTE_PK on TIPO_ESTUDIANTE (
+ID_TIPOESTUDIANTE
+);
+
+/*==============================================================*/
+/* Table: TIPO_TUTOR                                            */
+/*==============================================================*/
+create table TIPO_TUTOR (
+   ID_TIPOTUTORES       SERIAL               not null,
+   DETALLE_TIPOTUTOR    TEXT                 not null,
+   ENLACES_TIPOTUTOR    TEXT                 not null,
+   constraint PK_TIPO_TUTOR primary key (ID_TIPOTUTORES)
+);
+
+/*==============================================================*/
+/* Index: TIPO_TUTOR_PK                                         */
+/*==============================================================*/
+create unique index TIPO_TUTOR_PK on TIPO_TUTOR (
+ID_TIPOTUTORES
+);
+
+/*==============================================================*/
+/* Table: TUTOR                                                 */
+/*==============================================================*/
+create table TUTOR (
+   ID_TUTOR             SERIAL               not null,
+   ID_TIPOTUTORES       INT4                 not null,
+   ID_EMPRESA           INT4                 not null,
+   CEDULA_TUTOR         CHAR(11)             not null,
+   NOMBRE_TUTOR         TEXT                 not null,
+   APELLIDO_TUTOR       TEXT                 not null,
+   PROFESION_TUTOR      TEXT                 not null,
+   TELEFONO_TUTOR       CHAR(10)             not null,
+   CORREO_TUTOR         TEXT                 not null,
+   TIPO_CONTRATO_TUTOR  TEXT                 not null,
+   constraint PK_TUTOR primary key (ID_TUTOR)
+);
+
+/*==============================================================*/
+/* Index: TUTOR_PK                                              */
+/*==============================================================*/
+create unique index TUTOR_PK on TUTOR (
+ID_TUTOR
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_5_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_5_FK on TUTOR (
+ID_TIPOTUTORES
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_7_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_7_FK on TUTOR (
+ID_EMPRESA
+);
+
+/*==============================================================*/
+/* Table: TUTORIA                                               */
+/*==============================================================*/
+create table TUTORIA (
+   ID_TUTORIAS          SERIAL               not null,
+   ID_MEDIOS            INT4                 not null,
+   ID_TUTOR             INT4                 not null,
+   TITULO_TUTORIA       TEXT                 not null,
+   DURACION_TUTORIA     TIME                 not null,
+   FECHA_TUTORIA        DATE                 not null,
+   INICIO_TUTORIA       TIME                 not null,
+   FIN_TUTORIA          TIME                 not null,
+   SALA_TUTORIA         TEXT                 not null,
+   ENLACE_TUTORIA       TEXT                 not null,
+   COSTO_TUTORIA        DECIMAL              not null,
+   constraint PK_TUTORIA primary key (ID_TUTORIAS)
+);
+
+/*==============================================================*/
+/* Index: TUTORIA_PK                                            */
+/*==============================================================*/
+create unique index TUTORIA_PK on TUTORIA (
+ID_TUTORIAS
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_2_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_2_FK on TUTORIA (
+ID_MEDIOS
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_12_FK                                    */
+/*==============================================================*/
+create  index RELATIONSHIP_12_FK on TUTORIA (
+ID_TUTOR
+);
+
+--LLAVES FORANEAS 
+
+alter table DESCRIPCION_TUTORIA
+   add constraint FK_DESCRIPC_RELATIONS_TUTORIA foreign key (ID_TUTORIAS)
+      references TUTORIA (ID_TUTORIAS)
+      on delete restrict on update restrict;
+
+alter table EMPRESA
+   add constraint FK_EMPRESA_RELATIONS_PROVINCI foreign key (ID_PROVINCIA)
+      references PROVINCIA (ID_PROVINCIA)
+      on delete restrict on update restrict;
+
+alter table ESTUDIANTE
+   add constraint FK_ESTUDIAN_RELATIONS_TIPO_EST foreign key (ID_TIPOESTUDIANTE)
+      references TIPO_ESTUDIANTE (ID_TIPOESTUDIANTE)
+      on delete restrict on update restrict;
+
+alter table ESTUDIANTE
+   add constraint FK_ESTUDIAN_RELATIONS_EMPRESA foreign key (ID_EMPRESA)
+      references EMPRESA (ID_EMPRESA)
+      on delete restrict on update restrict;
+
+alter table MEDIO
+   add constraint FK_MEDIO_RELATIONS_EMPRESA foreign key (ID_EMPRESA)
+      references EMPRESA (ID_EMPRESA)
+      on delete restrict on update restrict;
+
+alter table PROVINCIA
+   add constraint FK_PROVINCI_RELATIONS_PAIS foreign key (ID_PAIS)
+      references PAIS (ID_PAIS)
+      on delete restrict on update restrict;
+
+alter table RELACION
+   add constraint FK_RELACION_RELACION_DESCRIPC foreign key (ID_DESCRIPCIONTUTORIA)
+      references DESCRIPCION_TUTORIA (ID_DESCRIPCIONTUTORIA)
+      on delete restrict on update restrict;
+
+alter table RELACION
+   add constraint FK_RELACION_RELACION2_ESTUDIAN foreign key (ID_ESTUDIANTE)
+      references ESTUDIANTE (ID_ESTUDIANTE)
+      on delete restrict on update restrict;
+
+alter table TUTOR
+   add constraint FK_TUTOR_RELATIONS_TIPO_TUT foreign key (ID_TIPOTUTORES)
+      references TIPO_TUTOR (ID_TIPOTUTORES)
+      on delete restrict on update restrict;
+
+alter table TUTOR
+   add constraint FK_TUTOR_RELATIONS_EMPRESA foreign key (ID_EMPRESA)
+      references EMPRESA (ID_EMPRESA)
+      on delete restrict on update restrict;
+
+alter table TUTORIA
+   add constraint FK_TUTORIA_RELATIONS_TUTOR foreign key (ID_TUTOR)
+      references TUTOR (ID_TUTOR)
+      on delete restrict on update restrict;
+
+alter table TUTORIA
+   add constraint FK_TUTORIA_RELATIONS_MEDIO foreign key (ID_MEDIOS)
+      references MEDIO (ID_MEDIOS)
+      on delete restrict on update restrict;
+
+--INSERCION DE DATOS
+	  
+--Insertar datos pais
+insert into pais(id_pais, nombre_pais) values
+('1012','Ecuador'), 
+('1013','México'), 
+('1014','Argentina')
+
+--Insertar datos provincia
+insert into provincia(id_provincia, id_pais, nombre_provincia) values
+('101','1012','Manabí'), 
+('102','1013','Jalisco'), 
+('103','1014','Buenos Aires')
+
+--Insertar datos empresa
+insert into empresa(id_empresa, id_provincia, nombre_empresa) values
+('115','101','software para educación'), 
+('116','102','software para educación'), 
+('117','103','software para educación')
+
+--Insertar datos medio
+insert into medio(id_medios, id_empresa, tipos_medios, costo_medio) values
+('120','115','zoom','20.00'), 
+('121','116','microsoft teams','30.00'), 
+('122','117','skype', '35.00')
+
+--Insertar tipo estudiante
+insert into tipo_estudiante(id_tipoestudiante, detalle_tipoestudiante) values
+('131','estudiantes de universidad'), 
+('132','investigadores'), 
+('133','padres de familia')
+
+--Insertar estudiante
+insert into estudiante(id_estudiante, id_tipoestudiante, id_empresa, cedula_estudiante,
+nombre_estudiante, apellido_estudiante, profesion_estudiante,
+telefono_estudiante, correo_estudiante) values
+('140','131','115','1315245769','Dayanne','Cedeño','estudiante','0969872722','dayannecedeño@gmail.com'),
+('141','132','116','1317144986','Luis','Bazurto','investigador','0934567896','luisbazurto@gmail.com'),
+('142','133','117','1358796543','María','Villamar','empresaria','0969661757','mariavillamar@gmail.com'),
+('143','131','115','1345678432','Nicole','Echeverria','estudiante','0954623458','nicoleev@gmail.com'),
+('145','132','116','1321234566','Harry','Styles','investigador','0983248448','harrito@gmail.com'),
+('146','133','117','1312121567','Marcelo','Ruiz','empresario','0949583293','marceruiz@gmail.com'),
+('147','131','115','1315987424','Daniela','Palma','estudiante','0984325835','danielapalma@gmail.com'),
+('148','131','115','1313141567','Diego','Murillo','estudiante','0942845737','murillodiego@gmail.com'),
+('149','132','116','1315467954','Mateo','Parraga','investigador','0934567832','mateoparraga@gmail.com')
+
+--Insertar tipo tutor
+insert into tipo_tutor(id_tipotutores, detalle_tipotutor, enlaces_tipotutor) values
+('170','extrangero','www.uleam.com'), 
+('171','nacional','www.utm.com'), 
+('172','nacional','www.uess.com')
+
+--Insertar tutor
+insert into tutor(id_tutor, id_tipotutores, id_empresa, cedula_tutor,
+nombre_tutor, apellido_tutor, profesion_tutor,telefono_tutor, correo_tutor, tipo_contrato_tutor) values
+('180','170','115','1369249582','Carlos','Ostaiza','ingeniero','0995847345','carlos@gmail.com','interno'),
+('181','171','116','1313456978','Joseph','Espinal','doctor','0956049393','josephespinal@gmail.com','externo'),
+('182','172','117','1312495863','Soraya','Moreira','abogada','0985748384','soraya@gmail.com','externo')
+
+--Insertar datos tutoria
+insert into tutoria(id_tutorias, id_medios, id_tutor, titulo_tutoria, duracion_tutoria, fecha_tutoria, 
+inicio_tutoria, fin_tutoria, sala_tutoria, enlace_tutoria, costo_tutoria) values
+('150','120','180','base de datos','02:00:00','2021/12/16','09:00:00','11:00:00','sala1','www.zoom.com','10.00'), 
+('151','121','181','aplicaciones web','01:30:00','2021/10/15','10:00:00','11:30:00','sala2','www.teams.com','25.00'),
+('152','122','182','interfaces y multimedia','03:00:00','2021/09/13','11:00:00','13:00:00','sala3','www.skype.com','30.00'),
+('153','120','180','base de datos','02:00:00','2021/12/18','09:00:00','11:00:00','sala1','www.zoom.com','10.00'),
+('154','120','180','base de datos','02:00:00','2021/12/20','09:00:00','11:00:00','sala1','www.zoom.com','10.00'),
+('155','121','181','aplicaciones web','01:30:00','2021/10/21','10:00:00','11:30:00','sala2','www.teams.com','25.00'),
+('156','122','182','interfaces y multimedia','03:00:00','2021/09/15','11:00:00','13:00:00','sala3','www.skype.com','30.00'),
+('157','120','180','base de datos','02:00:00','2021/12/19','09:00:00','11:00:00','sala1','www.zoom.com','10.00'),
+('158','121','181','aplicaciones web','01:30:00','2021/10/18','10:00:00','11:30:00','sala2','www.teams.com','25.00')
+
+--Insertar descripcion tutoria
+insert into descripcion_tutoria(id_descripciontutoria, id_tutorias, estado_tutoria, nivel_satisfaccion_tutoria)values 
+('190','150','aceptado','satisfactorio'),
+('191','151','rechazado','regular'), 
+('192','152','aceptado','malo'),
+('193','153','rechazado','regular'),
+('194','154','rechazado','regular'), 
+('195','155','aceptado','malo'),
+('196','156','aceptado','satisfactorio'),
+('197','157','rechazado','regular'), 
+('198','158','aceptado','malo')
+
+
+--CONSULTAS 
+
+--Mostrar el top descendente a todos los profesores que han dado tutorías, 
+--deben listarse primero el grupo de los tutores externos y luego los de contratación propia. 	
+SELECT
+ nombre_tutor as nombre_tutor, 
+ count(id_tutorias) as cantidad_tutorias, 
+ tipo_contrato_tutor as tutor_interno_externo
+ FROM 
+ tutor t inner join tutoria a on t.id_tutor=a.id_tutor
+ GROUP BY 
+ nombre_tutor,tipo_contrato_tutor
+ 
+--Mostrar por año y mes cuanto la empresa ha recibido en ingresos por tutorías.	   
+	 SELECT 
+	   nombre_empresa,
+	   fecha_tutoria, 
+	   sum (costo_tutoria)
+	   FROM 
+	   tutoria b inner join medio c on b.id_medios= c.id_medios
+	   inner join empresa d on c.id_empresa= d.id_empresa
+	   Group by nombre_empresa, fecha_tutoria 
+	   
+	   
+-- Mostrar por país y por provincia la cantidad de estudiantes a los que el centro ha dado tutorías. 
+	   SELECT 
+	   nombre_empresa as nombre_centro, 
+	   nombre_pais, 
+	   nombre_provincia, 
+	   count (nombre_estudiante) as cantidad_estudiantes
+	   FROM estudiante e inner join empresa f on e.id_empresa= f.id_empresa
+	   inner join 
+	   provincia g on f.id_provincia= g.id_provincia
+	   inner join 
+	   pais h on g.id_pais= h.id_pais 
+	   Group by nombre_pais, nombre_provincia, nombre_empresa
+	   
+--- Mostrar por año la cantidad de propuestas de tutoría rechazadas.
+	   SELECT 
+	   fecha_tutoria, 
+	   count (*) cantidad_tutoria,
+	   estado_tutoria as propuesta
+	   FROM descripcion_tutoria i 
+	   inner join tutoria j on i.id_tutorias= j.id_tutorias
+	   where (estado_tutoria='rechazado') 
+	   Group by fecha_tutoria, estado_tutoria
